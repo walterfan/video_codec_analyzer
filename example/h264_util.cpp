@@ -19,17 +19,6 @@ using namespace boost::program_options;
 
 const uint32_t BUF_SIZE = 10 * 1024 * 1024;
 
-
-int GetVideoSize(u32 maxFS) {
-    if (maxFS >= (2160*3840)/256) { return 2k;}
-    else if (maxFS >= (1080*1920)/256) { return STREAM_1080p;}
-    else  if (maxFS >= (720*1280)/256) { return STREAM_720p;}
-    else if (maxFS >= (360*640)/256) { return STREAM_360p;}
-    else if (maxFS >= (180*320)/256) { return  STREAM_180p;}
-    else { return STREAM_90p;}
-  }
-
-
 VideoStream::VideoStream(const std::string& fileName):m_fileName(fileName) {
 	// TODO Auto-generated constructor stub
 
@@ -65,8 +54,6 @@ VideoStream::VideoStream(const VideoStream &other) {
 
 int h264_demo(const variables_map& vm) {
 
-	NALU_t *n;
-
 	uint8_t* buf = (uint8_t*)malloc( BUF_SIZE );
 
 	if (!vm.count("input")) {
@@ -78,7 +65,6 @@ int h264_demo(const variables_map& vm) {
 	BOOST_LOG_TRIVIAL(trace) << "read " << input_file;
 
 	FILE *fpInput = NULL;
-	FILE *fpOutput = stdout;
 
 	fpInput = fopen(input_file.c_str(), "rb+");
 	if (fpInput==NULL){
@@ -88,8 +74,7 @@ int h264_demo(const variables_map& vm) {
 
     size_t rsz = 0;
     size_t sz = 0;
-    int64_t off = 0;
-    uint8_t* p = buf;
+
 	while(!feof(fpInput)) {
 		rsz = fread(buf + sz, 1, BUF_SIZE - sz, fpInput);
         if (rsz == 0)

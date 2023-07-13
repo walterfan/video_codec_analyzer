@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	string rtpDumpFile = "rtp_dump.dat";
   int nPort =  PORT;
   int nCount = 10000;
-  int nRet = 0;  
+  int nRet = 0;
   if(argc > 2) {
     
      nPort = atoi(argv[1]);
@@ -86,6 +86,6 @@ int main(int argc, char *argv[])
     }
 
     close(sockfd);
-    return 0;
+    return nRet;
 }
 
