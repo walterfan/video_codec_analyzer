@@ -5,12 +5,37 @@ It is for Video Codec Analysis.
 * examples
 * tools
 
+## compile
+
 ```
 mkdir build
 cd build
 cmake ..
 make
 ```
+
+## test
+
+```
+// step 1
+./udpserver 8888 dump.dat 1000
+
+// step 2
+ffmpeg \
+    -re \
+    -i ../obama_talk.mp4 \
+    -an \
+    -c:v copy \
+    -f rtp \
+    -sdp_file video.sdp \
+    "rtp://127.0.0.1:5004"
+
+// step 3
+./media_parser ../../media/bld/dump.dat |more
+
+```
+
+
 
 # Documents
 
